@@ -4,79 +4,11 @@
 #include <stdio.h>
 #include "uart.h"
 #include "nokia5110.h"
-//#include "dhtxx.h"
+#include "dht.h"
 
+uint8_t I_RH,D_RH,I_Temp,D_Temp,CheckSum, I_Temp_F;
 
-#define DHT11_PIN 2
-#define TIMEOUT 1000
-
-uint8_t c=0,I_RH,D_RH,I_Temp,D_Temp,CheckSum;
-
-void Request()				/* Microcontroller send start pulse/request */
-{
-	DDRD |= (1<<DHT11_PIN);
-	PORTD &= ~(1<<DHT11_PIN);	/* set to low pin */
-	_delay_ms(18);			/* wait for 20ms */
-	PORTD |= (1<<DHT11_PIN); /* set to high pin */
-
-}
-
-void Response()				/* receive response from DHT11 */
-{
-    uint8_t counter = 0;
-    DDRD &= ~(1<<DHT11_PIN);
-    while(PIND & (1<<DHT11_PIN))
-        {
-            _delay_us(1);
-            counter++;
-            if(counter>60)
-                return;
-        }
-    counter = 0;
-	while((PIND & (1<<DHT11_PIN))==0)
-        {
-            _delay_us(1);
-            counter++;
-            if(counter>80)
-                return;
-        }
-    counter = 0;
-	while(PIND & (1<<DHT11_PIN))
-        {
-            _delay_us(1);
-            counter++;
-            if(counter>80)
-                return;
-        }
-}
-
-
-uint8_t Receive_data()			/* receive data */
-{
-    uint16_t timeoutcounter = 0;
-	for (int q=0; q<8; q++)
-	{
-		while(!(PIND & (1<<DHT11_PIN))) {
-            timeoutcounter++;
-            if(timeoutcounter > TIMEOUT)
-                return -1;
-		}  /* check received bit 0 or 1 */
-
-		_delay_us(30);
-		if(PIND & (1<<DHT11_PIN))/* if high pulse is greater than 30us */
-		c = (c<<1)|(0x01);	/* then its logic HIGH */
-		else			/* otherwise its logic LOW */
-		c = (c<<1);
-
-		while(PIND & (1<<DHT11_PIN)) {
-            timeoutcounter++;
-            if(timeoutcounter > TIMEOUT)
-                return -1;
-		}
-	}
-	return c;
-}
-
+uint8_t asm_convert(uint8_t temp);
 
 int main(void)
 {
@@ -115,6 +47,7 @@ int main(void)
 		I_Temp=Receive_data();	/* store next eight bit in I_Temp */
 		D_Temp=Receive_data();	/* store next eight bit in D_Temp */
 		CheckSum=Receive_data();/* store next eight bit in CheckSum */
+		//T_asm = asm_convert(I_Temp);
 
         //printf("vlhkost %i\n", I_RH);
         //printf("teplota %i\n", I_Temp);
@@ -139,9 +72,9 @@ int main(void)
 			nokia_lcd_write_string(data,2);
 			nokia_lcd_write_string(".",2);
 
-			itoa(D_Temp,data,10);
-			nokia_lcd_write_string(data,2);
-			nokia_lcd_write_string("C ",2);
+			//itoa(D_Temp,data,10);
+			//nokia_lcd_write_string(data,2);
+			//nokia_lcd_write_string("C ",2);
 
 			itoa(CheckSum,data,10);
 			//nokia_lcd_write_string(data,1);
