@@ -13,6 +13,6 @@ Jako samostatný projekt jsme vytvořili domácí meteostanici, která zobrazuje
 
 Na obrázku je zobrazeno zapojení jednotlivých pinů čidla DHT11.
 
-![DHT11_Sensor](C:\Users\ZávorkaRadek(186242)\projekt-BMPT\DHT11_Sensor.jpg)
+![DHT11_Sensor](DHT11_Sensor.jpg)
 
 K zobrazování využíváme **Nokia LCD displej 5110**. Ten je připojen 8 piny k **arduinu UNO**.
