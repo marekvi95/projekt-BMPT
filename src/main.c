@@ -1,16 +1,16 @@
 #include "settings.h"
 #include <avr/io.h>
 #include <util/delay.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "uart.h"
 #include "nokia5110.h"
 #include "dht.h"
+#include <avr/interrupt.h>
 
 
 uint8_t I_RH,D_RH,I_Temp,D_Temp,CheckSum, I_Temp_F;
 
 extern uint16_t convtof(uint16_t);
+char tempset = 0;
 
 uint16_t roundtemp(uint16_t I, uint16_t D)
 {
@@ -22,9 +22,15 @@ uint16_t roundtemp(uint16_t I, uint16_t D)
 
 int main(void)
 {
+    uart_init();
+    sei();
+    uart_puts("Press any key to change temperature units\n");
+    //DDRD |= 1<<1;
+
+
 
     uint16_t result;
-    char data[5],tempset;
+    char data[5];
 
     nokia_lcd_init();
     nokia_lcd_clear();
@@ -36,11 +42,6 @@ int main(void)
     _delay_ms(1000);
     //nokia_lcd_clear();
 
-    uart_init();
-    stdout = &uart_output;
-    stdin = &uart_input;
-    printf("Press f to show temeperautre in F, press any key to show temperature in C\n");
-
 
     nokia_lcd_init();
 	nokia_lcd_clear();			/* Clear LCD */
@@ -48,15 +49,16 @@ int main(void)
 	nokia_lcd_set_cursor(0,10);		/* Enter column and row position */
 	nokia_lcd_write_string("Initialization ",1);
 	nokia_lcd_set_cursor(0,20);		/* Enter column and row position */
-	nokia_lcd_write_string("Open console",1);
+	nokia_lcd_write_string("Open console..",1);
     nokia_lcd_render();
 	_delay_ms(1000);
-	tempset = getc(stdin);
-	printf("Initialization of the sensor\n");
+
+
+
 
     while(1)
 	{
-        //nokia_lcd_clear();
+        nokia_lcd_clear();
 		Request();		/* send start pulse */
 		Response();		/* receive response */
 		I_RH=Receive_data();	/* store first eight bit in I_RH */
@@ -66,6 +68,7 @@ int main(void)
 		CheckSum=Receive_data();/* store next eight bit in CheckSum */
 
         //printf("vlhkost %i\n", I_RH);
+
         //printf("teplota %i\n", I_Temp);
         //nokia_lcd_write_string("zkouska",1);
 
@@ -83,7 +86,7 @@ int main(void)
 			nokia_lcd_write_string("%",2);
 			nokia_lcd_set_cursor(0,30);
 
-			if(tempset == 'f') {
+			if(tempset) {
                 I_Temp = roundtemp(I_Temp, D_Temp);
                 result = convtof(I_Temp);
                 itoa(result,data,10);
@@ -94,6 +97,7 @@ int main(void)
 			}
 			else {
                 itoa(I_Temp,data,10);
+
                 nokia_lcd_write_string("T=",2);
                 nokia_lcd_write_string(data,2);
                 nokia_lcd_write_string(".",2);
@@ -110,7 +114,14 @@ int main(void)
             nokia_lcd_render();
         }
 
-	_delay_ms(10);
 	}
     return(0);
+}
+
+
+ISR(USART_RX_vect)
+{
+    uart_flush();
+    uart_puts("Temperature units changed\n");
+	tempset = !tempset;
 }

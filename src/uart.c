@@ -1,41 +1,40 @@
 #include <avr/io.h>
-#include <stdio.h>
-
-#ifndef F_CPU
-#define F_CPU 16000000UL
-#endif
-
-#ifndef BAUD
-#define BAUD 9600
-#endif
-#include <util/setbaud.h>
+#include <avr/interrupt.h>
+#include "settings.h"
 
 /* http://www.cs.mun.ca/~rod/Winter2007/4723/notes/serial/serial.html */
 
-void uart_init(void) {
-    UBRR0H = UBRRH_VALUE;
-    UBRR0L = UBRRL_VALUE;
-    
-#if USE_2X
-    UCSR0A |= _BV(U2X0);
-#else
-    UCSR0A &= ~(_BV(U2X0));
-#endif
+void uart_init(void)
+{
+  unsigned int ubrr = F_CPU/16/9600-1;
 
-    UCSR0C = _BV(UCSZ01) | _BV(UCSZ00); /* 8-bit data */ 
-    UCSR0B = _BV(RXEN0) | _BV(TXEN0);   /* Enable RX and TX */    
+  /* Set baud rate */
+	UBRR0 = ubrr;
+	/* Enable receiver and transmitter */
+	UCSR0B = (1<<RXEN0) | (1<<TXEN0);
+	/* Set frame format: 8data, 1stop bit */
+	UCSR0C = (3<<UCSZ00);
+	UCSR0B |= 1<<RXCIE0;
+
 }
 
-void uart_putchar(char c, FILE *stream) {
-    if (c == '\n') {
-        uart_putchar('\r', stream);
-    }
-    loop_until_bit_is_set(UCSR0A, UDRE0);
-    UDR0 = c;
+void uart_putc(unsigned char data)
+{
+	/* Wait for empty transmit buffer */
+	while ( !( UCSR0A & (1<<UDRE0)) );
+	/* Put data into buffer, sends the data */
+	UDR0 = data;
 }
 
-char uart_getchar(FILE *stream) {
-    loop_until_bit_is_set(UCSR0A, RXC0);
-    return UDR0;
+void uart_puts(char str[])
+{
+  for (int i=0; str[i]; i++)
+    uart_putc(str[i]);
 }
 
+uint8_t uart_flush(void)
+{
+    uint8_t tmp;
+    tmp = UDR0;
+    return tmp;
+}
