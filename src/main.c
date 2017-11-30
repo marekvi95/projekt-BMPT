@@ -2,17 +2,29 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "uart.h"
 #include "nokia5110.h"
 #include "dht.h"
 
+
 uint8_t I_RH,D_RH,I_Temp,D_Temp,CheckSum, I_Temp_F;
 
-uint8_t asm_convert(uint8_t temp);
+extern uint16_t convtof(uint16_t);
+
+uint16_t roundtemp(uint16_t I, uint16_t D)
+{
+    if (D>=5)
+        return I+1;
+    else
+        return I;
+}
 
 int main(void)
 {
 
+    uint16_t result;
+    char data[5],tempset;
 
     nokia_lcd_init();
     nokia_lcd_clear();
@@ -27,15 +39,20 @@ int main(void)
     uart_init();
     stdout = &uart_output;
     stdin = &uart_input;
+    printf("Press f to show temeperautre in F, press any key to show temperature in C\n");
 
-    char data[5];
+
     nokia_lcd_init();
 	nokia_lcd_clear();			/* Clear LCD */
 	nokia_lcd_write_string("Humidity&Temp ",1);
 	nokia_lcd_set_cursor(0,10);		/* Enter column and row position */
 	nokia_lcd_write_string("Initialization ",1);
+	nokia_lcd_set_cursor(0,20);		/* Enter column and row position */
+	nokia_lcd_write_string("Open console",1);
     nokia_lcd_render();
 	_delay_ms(1000);
+	tempset = getc(stdin);
+	printf("Initialization of the sensor\n");
 
     while(1)
 	{
@@ -47,7 +64,6 @@ int main(void)
 		I_Temp=Receive_data();	/* store next eight bit in I_Temp */
 		D_Temp=Receive_data();	/* store next eight bit in D_Temp */
 		CheckSum=Receive_data();/* store next eight bit in CheckSum */
-		//T_asm = asm_convert(I_Temp);
 
         //printf("vlhkost %i\n", I_RH);
         //printf("teplota %i\n", I_Temp);
@@ -67,16 +83,28 @@ int main(void)
 			nokia_lcd_write_string("%",2);
 			nokia_lcd_set_cursor(0,30);
 
-			itoa(I_Temp,data,10);
-            nokia_lcd_write_string("T=",2);
-			nokia_lcd_write_string(data,2);
-			nokia_lcd_write_string(".",2);
+			if(tempset == 'f') {
+                I_Temp = roundtemp(I_Temp, D_Temp);
+                result = convtof(I_Temp);
+                itoa(result,data,10);
+                nokia_lcd_write_string("T=",2);
+                nokia_lcd_write_string(data,2);
+                nokia_lcd_write_string("!",1); //character for °
+                nokia_lcd_write_string("F",2);
+			}
+			else {
+                itoa(I_Temp,data,10);
+                nokia_lcd_write_string("T=",2);
+                nokia_lcd_write_string(data,2);
+                nokia_lcd_write_string(".",2);
 
-			//itoa(D_Temp,data,10);
-			//nokia_lcd_write_string(data,2);
-			//nokia_lcd_write_string("C ",2);
+                itoa(D_Temp,data,10);
+                nokia_lcd_write_string(data,2);
+                nokia_lcd_write_string("!",1);
+                nokia_lcd_write_string("C",2);
+			}
 
-			itoa(CheckSum,data,10);
+			//itoa(CheckSum,data,10);
 			//nokia_lcd_write_string(data,1);
             //nokia_lcd_write_string(" ",1);
             nokia_lcd_render();

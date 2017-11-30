@@ -1,0 +1,6 @@
+dht.o: ../src/dht.c ../lib/settings.h ../lib/dht.h
+main.o: ../src/main.c ../lib/settings.h ../lib/uart.h ../lib/nokia5110.h \
+ ../lib/dht.h
+nokia5110.o: ../src/nokia5110.c ../lib/nokia5110.h \
+ ../lib/nokia5110_chars.h
+uart.o: ../src/uart.c
