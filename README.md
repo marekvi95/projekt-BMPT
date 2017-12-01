@@ -20,7 +20,7 @@ K zobrazování využíváme **LCD displej Nokia 5110**, který byl původně ur
 
 Displej je připojen 8 piny k **arduinu UNO**. 
        
-       Graphic LCD Pin -----  Arduino Pin
+							Graphic LCD Pin -----  Arduino Pin
        1-VCC       ----------------  5V
        2-GND       ----------------  GND
        3-SCE       ----------------  7
