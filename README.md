@@ -33,6 +33,7 @@ Displej je připojen 8 piny k **arduinu UNO**.
 Samotný projekt využívá knihovny pro UART a Makefile od Wykys, knihovnu pro obsluhu displeje od LittleBuster a knihovnu pro vyčítaní hodnot ze senzoru DHT11, která byla napsána podle http://www.electronicwings.com/avr-atmega/dht11-sensor-interfacing-with-atmega16-32.
 
 Adresářová struktura projektu
+       
        .
        ├── BMPT_projekt.png
        ├── DHT11_Sensor.jpg
