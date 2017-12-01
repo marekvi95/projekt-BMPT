@@ -38,7 +38,7 @@ Displej je připojen 8 piny k arduinu UNO.
       
 Samotný projekt využívá knihovny pro UART a Makefile od Wykys, knihovnu pro obsluhu displeje od LittleBuster a knihovnu pro vyčítaní hodnot ze senzoru DHT11, která byla napsána podle http://www.electronicwings.com/avr-atmega/dht11-sensor-interfacing-with-atmega16-32.
 
-Adresářová struktura projektu
+### Adresářová struktura projektu
        
        .
        ├── BMPT_projekt.png
@@ -72,5 +72,5 @@ Adresářová struktura projektu
        ├── nokia5110.c
        └── uart.c
 
-Video
+### Video: 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/l24VOcxQkVo/0.jpg)](https://www.youtube.com/watch?v=l24VOcxQkVo)
