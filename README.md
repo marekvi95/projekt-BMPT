@@ -71,3 +71,6 @@ Adresářová struktura projektu
        ├── main.c
        ├── nokia5110.c
        └── uart.c
+
+Video
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/l24VOcxQkVo/0.jpg)](https://www.youtube.com/watch?v=l24VOcxQkVo)
