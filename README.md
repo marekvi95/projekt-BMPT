@@ -18,8 +18,9 @@ Na obrázku je zobrazeno zapojení jednotlivých pinů čidla DHT11.
 K zobrazování využíváme **LCD displej Nokia 5110**, který byl původně určen jako displej pro mobilní telefony. V současné době je ale masově využíván pro projekty postavené na AVR mikrokontrolérech zejména kvůli nízké ceně, jednoduchém komunikačním rozhraní a velké dostupnosti knihoven. Displej využívá kontrolér PCD8544 a disponuje rozlišením 84x48.  
 
 
-Displej je připojen 8 piny k **arduinu UNO**. 
-       
+Displej je připojen 8 piny k arduinu UNO. 
+
+
 	Graphic LCD Pin -----  Arduino Pin
 	1-VCC       ----------------  5V
 	2-GND       ----------------  GND
@@ -29,6 +30,8 @@ Displej je připojen 8 piny k **arduinu UNO**.
 	6-DN(MOSI)  ----------------  11
 	7-SCLK      ----------------  13
 	8-LED       ----------------  9
+	
+	
       
 Samotný projekt využívá knihovny pro UART a Makefile od Wykys, knihovnu pro obsluhu displeje od LittleBuster a knihovnu pro vyčítaní hodnot ze senzoru DHT11, která byla napsána podle http://www.electronicwings.com/avr-atmega/dht11-sensor-interfacing-with-atmega16-32.
 
