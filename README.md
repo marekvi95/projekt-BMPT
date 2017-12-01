@@ -19,7 +19,8 @@ K zobrazování využíváme **LCD displej Nokia 5110**, který byl původně ur
 
 
 Displej je připojen 8 piny k **arduinu UNO**. 
-Graphic LCD Pin    ----------------  Arduino Pin
+       
+       Graphic LCD Pin -----  Arduino Pin
        1-VCC       ----------------  5V
        2-GND       ----------------  GND
        3-SCE       ----------------  7
@@ -32,34 +33,34 @@ Graphic LCD Pin    ----------------  Arduino Pin
 Samotný projekt využívá knihovny pro UART a Makefile od Wykys, knihovnu pro obsluhu displeje od LittleBuster a knihovnu pro vyčítaní hodnot ze senzoru DHT11, která byla napsána podle http://www.electronicwings.com/avr-atmega/dht11-sensor-interfacing-with-atmega16-32.
 
 Adresářová struktura projektu
-.
-├── BMPT_projekt.png
-├── DHT11_Sensor.jpg
-├── Makefile
-├── README.md
-├── bin
-│   ├── Debug
-│   │   └── BMPT_proj_29_11.lss
-│   ├── EEP.hex
-│   ├── Makefile
-│   ├── PRJ.elf
-│   ├── PRJ.hex
-│   ├── PRJ.lss
-│   ├── asmfunc.o
-│   ├── dependence.list
-│   ├── dht.o
-│   ├── main.o
-│   ├── nokia5110.o
-│   └── uart.o
-├── lib
-│   ├── dht.h
-│   ├── nokia5110.h
-│   ├── nokia5110_chars.h
-│   ├── settings.h
-│   └── uart.h
-└── src
-    ├── asmfunc.S
-    ├── dht.c
-    ├── main.c
-    ├── nokia5110.c
-    └── uart.c
+       .
+       ├── BMPT_projekt.png
+       ├── DHT11_Sensor.jpg
+       ├── Makefile
+       ├── README.md
+       ├── bin
+       │   ├── Debug
+       │   │   └── BMPT_proj_29_11.lss
+       │   ├── EEP.hex
+       │   ├── Makefile
+       │   ├── PRJ.elf
+       │   ├── PRJ.hex
+       │   ├── PRJ.lss
+       │   ├── asmfunc.o
+       │   ├── dependence.list
+       │   ├── dht.o
+       │   ├── main.o
+       │   ├── nokia5110.o
+       │   └── uart.o
+       ├── lib
+       │   ├── dht.h
+       │   ├── nokia5110.h
+       │   ├── nokia5110_chars.h
+       │   ├── settings.h
+       │   └── uart.h
+       └── src
+       ├── asmfunc.S
+       ├── dht.c
+       ├── main.c
+       ├── nokia5110.c
+       └── uart.c
