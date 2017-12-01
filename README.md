@@ -20,15 +20,15 @@ K zobrazování využíváme **LCD displej Nokia 5110**, který byl původně ur
 
 Displej je připojen 8 piny k **arduinu UNO**. 
        
-							Graphic LCD Pin -----  Arduino Pin
-       1-VCC       ----------------  5V
-       2-GND       ----------------  GND
-       3-SCE       ----------------  7
-       4-RST       ----------------  6
-       5-D/C       ----------------  5
-       6-DN(MOSI)  ----------------  11
-       7-SCLK      ----------------  13
-       8-LED       ----------------  9
+	Graphic LCD Pin -----  Arduino Pin
+	1-VCC       ----------------  5V
+	2-GND       ----------------  GND
+	3-SCE       ----------------  7
+	4-RST       ----------------  6
+	5-D/C       ----------------  5
+	6-DN(MOSI)  ----------------  11
+	7-SCLK      ----------------  13
+	8-LED       ----------------  9
       
 Samotný projekt využívá knihovny pro UART a Makefile od Wykys, knihovnu pro obsluhu displeje od LittleBuster a knihovnu pro vyčítaní hodnot ze senzoru DHT11, která byla napsána podle http://www.electronicwings.com/avr-atmega/dht11-sensor-interfacing-with-atmega16-32.
 
