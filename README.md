@@ -1,4 +1,4 @@
-*Projekt BMPT*
+**Projekt BMPT**
 
 **<u>Domácí meteostanice s LCD displejem z mobilního telefonu Nokia 5110</u>**
 
