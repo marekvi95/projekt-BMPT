@@ -1,16 +1,19 @@
 **Projekt BMPT**
 
-**<u>Domácí meteostanice s LCD displejem nokia 5110</u>**
+**<u>Domácí meteostanice s LCD displejem z mobilního telefonu Nokia 5110</u>**
 
 <u>zadání:</u> 
 
-* Vytvoření embedded aplikace pro mikrokontrolér AVR (ATmega16 nebo ATmega328p) v jazyce C (překladač avr-gcc). Minimálně jedna funkce musí být naprogramována v 
+* Vytvoření embedded aplikace pro mikrokontrolér AVR (ATmega16 nebo ATmega328p) v jazyce C (překladač avr-gcc). Minimálně jedna funkce musí být naprogramována v ASM.
 
 
 * Nejsou specifikovány konkrétní výstupy projektů; jen moduly, HW. Studenti si sami navrhnou demo aplikaci, ve které moduly použijí.
 
-Jako samostatný projekt jsme vytvořili domácí meteostanici, která zobrazuje na displeji **vlhkost** a **teplotu**. K měření jsme využili čidlo **DHT11**, které umožňuje tuto aplikaci. Čidlo má rozsah měřených teplot od 0 °C do 50 °C s přesností ±1 °C a vlhkost měří v rozmezí 20- 90% s přesností ±4 %.
+Jako samostatný projekt jsme vytvořili domácí meteostanici, která zobrazuje na displeji **vlhkost** a **teplotu**, kterou je pomocí klávesnice počítače komunikující přes **UART** možné přepínat mezi stupni **celsia** a **fahrenheita** . Na následujícím obrázku je vidět zapojení celé aplikace. K realizaci jsme využili desku **arduino uno**, která obsahuje mikroprocesor **ATmega328p**. 
 
+![BMPT_projekt](BMPT_projekt.png)
+
+Měření jsme realizovali pomocí čidla **DHT11**, které umožňuje tuto aplikaci. Čidlo má rozsah měřených teplot od 0 °C do 50 °C s přesností ±1 °C a vlhkost měří v rozmezí 20- 90% s přesností ±4 %.
 Na obrázku je zobrazeno zapojení jednotlivých pinů čidla DHT11.
 
 ![DHT11_Sensor](DHT11_Sensor.jpg)
