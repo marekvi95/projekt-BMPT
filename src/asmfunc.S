@@ -44,7 +44,7 @@ convtof:
     adc	r24, r1
     eor	r1, r1
     adc	r25, r1
-   	mul	r27, r18
+    mul	r27, r18
     add	r23, r0
     adc	r24, r1
     eor	r1, r1
