@@ -7,7 +7,7 @@
 #include <avr/interrupt.h>
 
 
-uint8_t I_RH,D_RH,I_Temp,D_Temp,CheckSum, I_Temp_F;
+uint8_t i_RH, d_RH, i_temp, d_temp, check_sum, i_temp_f;
 
 extern uint16_t convtof(uint16_t);
 char tempset = 0;
@@ -22,12 +22,9 @@ uint16_t roundtemp(uint16_t I, uint16_t D)
 
 int main(void)
 {
-    uart_init();
-    sei();
+    uart_init(); /* initialization of UART */
+    sei(); /* enable interrupts */
     uart_puts("Press any key to change temperature units\n");
-    //DDRD |= 1<<1;
-
-
 
     uint16_t result;
     char data[5];
@@ -40,55 +37,47 @@ int main(void)
     nokia_lcd_set_cursor(0, 40);
     nokia_lcd_render();
     _delay_ms(1000);
-    //nokia_lcd_clear();
 
 
     nokia_lcd_init();
-	nokia_lcd_clear();			/* Clear LCD */
-	nokia_lcd_write_string("Humidity&Temp ",1);
-	nokia_lcd_set_cursor(0,10);		/* Enter column and row position */
-	nokia_lcd_write_string("Initialization ",1);
-	nokia_lcd_set_cursor(0,20);		/* Enter column and row position */
-	nokia_lcd_write_string("Open console..",1);
+	  nokia_lcd_clear();			/* Clear LCD */
+	  nokia_lcd_write_string("Humidity&Temp ",1);
+	  nokia_lcd_set_cursor(0,10);		/* Enter column and row position */
+	  nokia_lcd_write_string("Initialization ",1);
+	  nokia_lcd_set_cursor(0,20);		/* Enter column and row position */
+	  nokia_lcd_write_string("Open console..",1);
     nokia_lcd_render();
-	_delay_ms(1000);
+	  _delay_ms(1000);
 
 
 
 
     while(1)
-	{
-        nokia_lcd_clear();
-		Request();		/* send start pulse */
-		Response();		/* receive response */
-		I_RH=Receive_data();	/* store first eight bit in I_RH */
-		D_RH=Receive_data();	/* store next eight bit in D_RH */
-		I_Temp=Receive_data();	/* store next eight bit in I_Temp */
-		D_Temp=Receive_data();	/* store next eight bit in D_Temp */
-		CheckSum=Receive_data();/* store next eight bit in CheckSum */
+	  {
+    nokia_lcd_clear();
+		request();		/* send start pulse */
+		response();		/* receive response */
+		i_RH=receive_data();	/* store first eight bit in I_RH */
+		d_RH=receive_data();	/* store next eight bit in D_RH */
+		i_temp=receive_data();	/* store next eight bit in I_Temp */
+		d_temp=receive_data();	/* store next eight bit in D_Temp */
+		check_sum=receive_data();/* store next eight bit in CheckSum */
 
-        //printf("vlhkost %i\n", I_RH);
-
-        //printf("teplota %i\n", I_Temp);
-        //nokia_lcd_write_string("zkouska",1);
-
-		if ((I_RH + D_RH + I_Temp + D_Temp) == CheckSum)
-
-		{
+		if ((i_RH + d_RH + i_temp + d_temp) == check_sum){
 			nokia_lcd_clear();
-			itoa(I_RH,data,10);
+			itoa(i_RH,data,10);
 			nokia_lcd_write_string("H=",2);
 			nokia_lcd_write_string(data,2);
 			nokia_lcd_write_string(".",2);
 
-			itoa(D_RH,data,10);
+			itoa(i_RH,data,10);
 			nokia_lcd_write_string(data,2);
 			nokia_lcd_write_string("%",2);
 			nokia_lcd_set_cursor(0,30);
 
 			if(tempset) {
-                I_Temp = roundtemp(I_Temp, D_Temp);
-                result = convtof(I_Temp);
+                i_temp = roundtemp(i_temp, d_temp);
+                result = convtof(i_temp);
                 itoa(result,data,10);
                 nokia_lcd_write_string("T=",2);
                 nokia_lcd_write_string(data,2);
@@ -96,23 +85,20 @@ int main(void)
                 nokia_lcd_write_string("F",2);
 			}
 			else {
-                itoa(I_Temp,data,10);
+                itoa(i_temp,data,10);
 
                 nokia_lcd_write_string("T=",2);
                 nokia_lcd_write_string(data,2);
                 nokia_lcd_write_string(".",2);
 
-                itoa(D_Temp,data,10);
+                itoa(d_temp,data,10);
                 nokia_lcd_write_string(data,2);
                 nokia_lcd_write_string("!",1);
                 nokia_lcd_write_string("C",2);
 			}
 
-			//itoa(CheckSum,data,10);
-			//nokia_lcd_write_string(data,1);
-            //nokia_lcd_write_string(" ",1);
-            nokia_lcd_render();
-        }
+      nokia_lcd_render();
+    }
 
 	}
     return(0);

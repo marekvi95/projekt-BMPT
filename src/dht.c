@@ -4,10 +4,11 @@
 #include <avr/io.h>
 #include <stdio.h>
 
-uint8_t c=0;
+uint8_t c=0 counter=0;
+uint16_t timeoutcounter = 0;
 
 
-void Request()				/* Microcontroller send start pulse/request */
+void request()				/* Microcontroller send start pulse/request */
 {
 	DDRD |= (1<<DHT11_PIN);
 	PORTD &= ~(1<<DHT11_PIN);	/* set to low pin */
@@ -16,9 +17,9 @@ void Request()				/* Microcontroller send start pulse/request */
 
 }
 
-void Response()				/* receive response from DHT11 */
+void response()				/* receive response from DHT11 */
 {
-    uint8_t counter = 0;
+    counter = 0;
     DDRD &= ~(1<<DHT11_PIN);
     while(PIND & (1<<DHT11_PIN))
         {
@@ -46,14 +47,14 @@ void Response()				/* receive response from DHT11 */
 }
 
 
-uint8_t Receive_data()			/* receive data */
+uint8_t receive_data()			/* receive data */
 {
-    uint16_t timeoutcounter = 0;
+    timeoutcounter = 0;
 	for (int q=0; q<8; q++)
 	{
 		while(!(PIND & (1<<DHT11_PIN))) {
             timeoutcounter++;
-            if(timeoutcounter > TIMEOUT)
+            if(timeoutcounter > TIMEOUT) /* timeout */
                 return -1;
 		}  /* check received bit 0 or 1 */
 
